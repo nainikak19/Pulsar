@@ -21,8 +21,8 @@ public class PostSearchController {
     private final PostSearchService postSearchService;
 
     @GetMapping("/posts")
-    public ResponseEntity<List<PostResponse>> searchPosts(@RequestParam String query) {
-        List<PostResponse> posts = postSearchService.searchPosts(query);
+    public ResponseEntity<List<PostResponse>> searchPosts(@RequestParam String keyword) {
+        List<PostResponse> posts = postSearchService.searchPosts(keyword);
         return ResponseEntity.ok(posts);
     }
 }
