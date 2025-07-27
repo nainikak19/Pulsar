@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.pulsar.model.User;
 import com.pulsar.repository.UserRepository;
-import com.pulsar.service.CustomUserDetails;
 
 import lombok.RequiredArgsConstructor;
 

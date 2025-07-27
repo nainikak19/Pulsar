@@ -8,6 +8,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "Welcome to Pulsar backend!";
+        return "Welcome to Pulsar backend made by Nainika Kaware!";
     }
 }

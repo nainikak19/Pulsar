@@ -1,11 +1,12 @@
 package com.pulsar.config;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -13,7 +14,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          org.springframework.security.core.AuthenticationException authException) throws IOException {
         response.setContentType("application/json");
-        response.setStatus(HttpServletResponse.SC_OK); // or 401 if you want
+        response.setStatus(HttpServletResponse.SC_OK); 
         response.getWriter().write("{ \"error\": \"Invalid credentials\" }");
     }
 }

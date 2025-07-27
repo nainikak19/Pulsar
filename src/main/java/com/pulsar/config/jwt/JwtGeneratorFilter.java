@@ -1,8 +1,5 @@
 package com.pulsar.config.jwt;
 
-
-
-
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
@@ -22,61 +19,43 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class JwtGeneratorFilter extends OncePerRequestFilter {
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		
-		log.info("inside generator filter ....");
-		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (null != authentication) {
-        	
-        	System.out.println("authentication "+authentication);
-        	
-        	
-            SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes());
-            
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (authentication != null) {
+            SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
             
             String jwt = Jwts.builder()
-            		.setIssuer("Shimbhu")
-            		.setSubject("JWT Token")
-                    .claim("username", authentication.getName())
-                    .claim("role",getRole(authentication.getAuthorities()))
+                    .setIssuer("Pulsar")
                     .setIssuedAt(new Date())
-                    .setExpiration(new Date(new Date().getTime()+ 30000000)) // expiration time
-                    .signWith(key).compact();
+                    .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 24 hours
+                    .claim("email", authentication.getName())
+                    .claim("authorities", populateAuthorities(authentication.getAuthorities()))
+                    .signWith(key)
+                    .compact();
             
-            response.setHeader(SecurityConstants.JWT_HEADER, jwt);
- 
-        
+            response.setHeader(JwtConstant.JWT_HEADER, jwt);
         }
-        System.out.println("Jwt Generator Executed");
+        
         filterChain.doFilter(request, response);
-    	
-		
-		
-	}
-	
-	
-	  private String getRole(Collection<? extends GrantedAuthority> collection) {
-	        
-	    String role="";
-		  for(GrantedAuthority ga:collection) {
-			  role= ga.getAuthority();
-		  }
-	    
-		  return role;
-	    }
-				
-	@Override
-	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-	
-        return !request.getServletPath().equals("/api/auth/login");	
-	}
-
+    }
+    
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        return !request.getServletPath().equals("/api/auth/login");
+    }
+    
+    public String populateAuthorities(Collection<? extends GrantedAuthority> collection) {
+        Set<String> authoritiesSet = new HashSet<>();
+        for (GrantedAuthority authority : collection) {
+            authoritiesSet.add(authority.getAuthority());
+        }
+        return String.join(",", authoritiesSet);
+    }
 }

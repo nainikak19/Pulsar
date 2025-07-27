@@ -1,16 +1,15 @@
 package com.pulsar.dto;
 
 import java.time.LocalDateTime;
+
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class PostResponse {
+public class FollowResponse {
     private Long id;
-    private String content;
     private String username;
-    private LocalDateTime createdAt;
-    private int likeCount;
-    private boolean likedByCurrentUser;
+    private String email;
+    private LocalDateTime followedAt;
 }
