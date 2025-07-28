@@ -53,6 +53,7 @@ Token: <JWT_TOKEN><br><br>
 Swagger is available at:<br>
 For UI:<br>
 [<small>http://localhost:9090/swagger-ui/index.html</small>](http://localhost:9090/swagger-ui/index.html)<br>
+
 For Documentation:<br>
 [<small>http://localhost:9090/v3/api-docs</small>](http://localhost:9090/v3/api-docs)<br>
 This shows all available endpoints with request/response models.<br><br>
@@ -60,7 +61,7 @@ This shows all available endpoints with request/response models.<br><br>
 **Architecture Diagram**<br>
 [<small>Click here</small>](https://excalidraw.com/#json=hDPVOGzhd5-wiUjESOfdi,31cqfIjUwI7PJ7pZBgFCSg)<br><br>
 
-**Video Walkthrough/Presentation**
+**Video Walkthrough/Presentation**<br>
 [<small>Get Video here</small>](https://drive.google.com/file/d/1cunIowJhAaw0SkjvICJ5aoMTasYmlK7X/view?usp=sharing)
 
 
