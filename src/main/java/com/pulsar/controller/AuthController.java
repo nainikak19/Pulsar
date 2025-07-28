@@ -21,10 +21,12 @@ import com.pulsar.model.User;
 import com.pulsar.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -33,35 +35,56 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        log.info("Registration attempt for username: {}, email: {}", request.getUsername(), request.getEmail());
+        
         try {
+            // Validate input
+            if (request.getUsername() == null || request.getUsername().trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("Username is required");
+            }
+            
+            if (request.getEmail() == null || request.getEmail().trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("Email is required");
+            }
+            
+            if (request.getPassword() == null || request.getPassword().trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("Password is required");
+            }
+
             // Check if username already exists
-            if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            if (userRepository.existsByUsername(request.getUsername())) {
+                log.warn("Registration failed: Username already exists - {}", request.getUsername());
                 return ResponseEntity.badRequest().body("Username already exists");
             }
             
             // Check if email already exists
-            if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            if (userRepository.existsByEmail(request.getEmail())) {
+                log.warn("Registration failed: Email already exists - {}", request.getEmail());
                 return ResponseEntity.badRequest().body("Email already exists");
             }
 
             // Create new user
             User user = new User();
-            user.setUsername(request.getUsername());
-            user.setEmail(request.getEmail());
+            user.setUsername(request.getUsername().trim());
+            user.setEmail(request.getEmail().trim());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             user.setRole("ROLE_USER");
 
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
+            log.info("User registered successfully: {} with ID: {}", savedUser.getUsername(), savedUser.getId());
             
             return ResponseEntity.ok("User registered successfully");
             
         } catch (Exception e) {
+            log.error("Registration failed for username: {}", request.getUsername(), e);
             return ResponseEntity.status(500).body("Registration failed: " + e.getMessage());
         }
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestHeader("Authorization") String authHeader) {
+        log.info("Login attempt");
+        
         try {
             // Extract username and password from Basic Auth header
             String base64Credentials = authHeader.substring("Basic ".length()).trim();
@@ -70,15 +93,19 @@ public class AuthController {
             String username = parts[0];
             String password = parts[1];
 
+            log.info("Login attempt for user: {}", username);
+
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.info("Login successful for user: {}", username);
             
             return ResponseEntity.ok("Login successful");
             
         } catch (Exception e) {
+            log.warn("Login failed: {}", e.getMessage());
             return ResponseEntity.status(401).body("Invalid credentials");
         }
     }
@@ -100,6 +127,7 @@ public class AuthController {
             return ResponseEntity.ok("User: " + user.getUsername() + ", Email: " + user.getEmail());
             
         } catch (Exception e) {
+            log.error("Error getting logged in user", e);
             return ResponseEntity.status(500).body("Error getting user: " + e.getMessage());
         }
     }
