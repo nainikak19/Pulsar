@@ -29,7 +29,7 @@ The app will start on:<br>
 http://localhost:9090<br><br>
 
 **Authentication Guide**<br>
-*Register User*<br>
+*1. Register User*<br>
 POST /api/auth/register<br>
 Example Body(JSON):<br>
 {<br>
@@ -37,12 +37,15 @@ Example Body(JSON):<br>
     "email": "nainika@gmail.com",<br>
     "password": "nainika123"<br>
 }<br>
-*POST /api/auth/login*<br>
+
+*2. Login User*
+POST /api/auth/login<br>
 Authorization -> Auth Type(Bearer Token)<br>
 Username: nainika@gmail.com<br>
 Password: nainika123<br>
 Response Header: Authorization: <JWT_TOKEN><br>
-*Use JWT Token in API Requests*<br>
+
+*3. Use JWT Token in API Requests*<br>
 Authorization -> Auth Type(Bearer Token)<br>
 Token: <JWT_TOKEN><br><br>
 
