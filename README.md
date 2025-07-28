@@ -4,6 +4,7 @@
 Pulsar is a Spring Boot-based backend for a Twitter-like social media platform. It includes user authentication, posting tweets (posts), a follow/unfollow system, timeline feeds, likes/unlikes, and search functionality.The project is fully secured using Spring Security & JWT Authentication and documented with Swagger.<br><br>
 
 <h3>Features</h3>
+
 - User Registration & Login with unique username/email
 - JWT Authentication for secure APIs
 - Create, Update, Delete Posts (Tweets)
@@ -15,6 +16,7 @@ Pulsar is a Spring Boot-based backend for a Twitter-like social media platform. 
 -Swagger API Documentation
 
 <he>How to Run the Project Locally</h3><br>
+
 *1. Clone the repository*<br>
 git clone https://github.com/nainikak19/Pulsar.git<br>
 *2. Prerequisites*<br>
@@ -30,6 +32,7 @@ The app will start on:<br>
 http://localhost:9090<br><br>
 
 <h3>Authentication Guide</h3><br>
+
 *1. Register User*<br>
 POST /api/auth/register<br>
 Example Body(JSON):<br>
