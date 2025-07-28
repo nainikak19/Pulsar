@@ -63,9 +63,11 @@ For Documentation:<br>
 This shows all available endpoints with request/response models.<br><br>
 
 <h3>Architecture Diagram</h3><br>
+
 [<small>Click here</small>](https://excalidraw.com/#json=hDPVOGzhd5-wiUjESOfdi,31cqfIjUwI7PJ7pZBgFCSg)<br><br>
 
 <h3>Video Walkthrough/Presentation</h3><br>
+
 [<small>Get Video here</small>](https://drive.google.com/file/d/1cunIowJhAaw0SkjvICJ5aoMTasYmlK7X/view?usp=sharing)
 
 
