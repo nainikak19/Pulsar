@@ -62,11 +62,11 @@ For Documentation:<br>
 [<small>http://localhost:9090/v3/api-docs</small>](http://localhost:9090/v3/api-docs)<br>
 This shows all available endpoints with request/response models.<br><br>
 
-<h3>Architecture Diagram</h3><br>
+<h3>Architecture Diagram</h3>
 
 [<small>Click here</small>](https://excalidraw.com/#json=hDPVOGzhd5-wiUjESOfdi,31cqfIjUwI7PJ7pZBgFCSg)<br><br>
 
-<h3>Video Walkthrough/Presentation</h3><br>
+<h3>Video Walkthrough/Presentation</h3>
 
 [<small>Get Video here</small>](https://drive.google.com/file/d/1cunIowJhAaw0SkjvICJ5aoMTasYmlK7X/view?usp=sharing)
 
