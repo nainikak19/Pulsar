@@ -20,6 +20,7 @@ git clone https://github.com/nainikak19/Pulsar.git<br>
 - Java 17
 - Maven 3+
 -MySQL
+
 *3. Setup Database*<br>
 Create a database in MySQL:<br>
 CREATE DATABASE pulsar_db;<br>
