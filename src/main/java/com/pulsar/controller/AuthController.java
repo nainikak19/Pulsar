@@ -11,10 +11,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pulsar.dto.RegisterRequest;
 import com.pulsar.model.User;
 import com.pulsar.repository.UserRepository;
 
@@ -28,6 +30,35 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        try {
+            // Check if username already exists
+            if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+                return ResponseEntity.badRequest().body("Username already exists");
+            }
+            
+            // Check if email already exists
+            if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+                return ResponseEntity.badRequest().body("Email already exists");
+            }
+
+            // Create new user
+            User user = new User();
+            user.setUsername(request.getUsername());
+            user.setEmail(request.getEmail());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setRole("ROLE_USER");
+
+            userRepository.save(user);
+            
+            return ResponseEntity.ok("User registered successfully");
+            
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Registration failed: " + e.getMessage());
+        }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestHeader("Authorization") String authHeader) {
